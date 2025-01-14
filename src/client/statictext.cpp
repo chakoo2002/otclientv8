@@ -139,21 +139,22 @@ void StaticText::compose()
        // if
        // m_cachedText.setFont(g_fonts.getFont("verdana-11px-rounded"));
     }
-    else if (m_mode == Otc::MessageWhisper) {
+    /*else if (m_mode == Otc::MessageWhisper) {
         texts.push_back(m_name + " says:\n");
         texts.push_back("#e3b049");
         m_cachedText.setFont(g_fonts.getFont("lucida-11px-rounded"));
         m_color = Color(227, 176, 73);
-    }
+    }*/
     else if (m_mode == Otc::MessageYell) {
         texts.push_back(m_name + " yells:\n");
         texts.push_back("#e3b049");
         m_color = Color(227, 176, 73);
     }
-    else if (m_mode == Otc::MessageMonsterSay || m_mode == Otc::MessageMonsterYell || m_mode == Otc::MessageSpell
-        || m_mode == Otc::MessageBarkLow || m_mode == Otc::MessageBarkLoud) {
+    else if (m_mode == Otc::MessageMonsterSay || m_mode == Otc::MessageMonsterYell || m_mode == Otc::MessageBarkLow || m_mode == Otc::MessageBarkLoud) {
         m_color = Color(254, 101, 0);
-        m_cachedText.setFont(g_fonts.getFont("Reggae One-10px-bordered"));
+    }
+    else if (m_mode == Otc::MessageWhisper) {
+        m_color = Color(0x9c, 0x98, 0xd7);
     }
     else if (m_mode == Otc::MessageNpcFrom || m_mode == Otc::MessageNpcFromStartBlock) {
         texts.push_back(m_name + " says:\n");
