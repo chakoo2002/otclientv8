@@ -70,6 +70,8 @@ public:
     void setOfflineTrainingTime(double offlineTrainingTime);
     void setSpells(const std::vector<int>& spells);
     void setBlessings(int blessings);
+    void setSummon(uint32_t summon) { m_summon = summon; }
+    uint32_t getSummonId() { return m_summon; }
 
     int getStates() { return m_states; }
     int getSkillLevel(uint8_t skill) { return skill < m_skillsLevel.size() ? m_skillsLevel[skill] : 0; }
@@ -200,6 +202,8 @@ private:
     double m_stamina;
     double m_regenerationTime;
     double m_offlineTrainingTime;
+
+    uint32_t m_summon;
 };
 
 #endif

@@ -174,10 +174,18 @@ public:
         return m_customAttribs.get<uint64>(key);
     }
 
+    void setRealUID(uint32 rUID) {
+        m_rUID = rUID;
+    }
+    uint32 getRealUID() {
+        return m_rUID;
+    }
+
     AnimatorPtr getAnimator() override { return m_animator; }
     AnimatorPtr getIdleAnimator() override { return m_idleAnimator; }
 
 private:
+    uint32 m_rUID;
     uint16 m_clientId;
     uint16 m_serverId;
     uint16 m_countOrSubType;

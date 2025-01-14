@@ -2779,7 +2779,7 @@ void ProtocolGame::parseModalDialog(const InputMessagePtr& msg)
     std::vector<std::tuple<int, std::string> > choiceList;
     for (int i = 0; i < sizeChoices; ++i) {
         std::string value = msg->getString();
-        int id = msg->getU8();
+        int id = msg->getU16();
         choiceList.push_back(std::make_tuple(id, value));
     }
 
@@ -3525,6 +3525,26 @@ CreaturePtr ProtocolGame::getCreature(const InputMessagePtr& msg, int type)
         if (g_game.getProtocolVersion() >= 854 || g_game.getFeature(Otc::GameCreatureWalkthrough))
             unpass = msg->getU8();
 
+        if (creatureType == Proto::CreatureTypeMonster) {
+            uint32_t level = msg->getU32();
+            uint32_t boost = msg->getU32();
+            if (creature) {
+                creature->setLevel(level);
+                if (boost > 0) {
+                    creature->setBoost(boost);
+                }
+            }
+        }
+
+        if (creatureType == Proto::CreatureTypePlayer) {
+            std::string titleText = msg->getString();
+            std::string titleFont = msg->getString();
+            std::string titleColor = msg->getString();
+            if (creature) {
+                creature->setTitle(titleText, titleFont, titleColor);
+            }
+        }
+
         if (creature) {
             creature->setHealthPercent(healthPercent);
             if (g_game.getFeature(Otc::GameCreaturesMana)) {
@@ -3605,6 +3625,9 @@ ItemPtr ProtocolGame::getItem(const InputMessagePtr& msg, int id, bool hasDescri
         }
     }
 
+    uint32_t RUID = msg->getU32();
+    if (RUID > 0) { item->setRealUID(RUID); }
+
     if (g_game.getFeature(Otc::GameItemAnimationPhase)) {
         if (item->getAnimationPhases() > 1) {
             // 0x00 => automatic phase
@@ -3625,6 +3648,102 @@ ItemPtr ProtocolGame::getItem(const InputMessagePtr& msg, int id, bool hasDescri
             uint16 key = msg->getU16();
             uint64 value = msg->getU64();
             item->setCustomAttribute(key, value);
+        }
+    }
+
+    uint8_t frame = msg->getU8();
+    uint8_t shader = msg->getU8();
+    uint16_t pokeId = msg->getU16();
+    if (g_game.getFeature(Otc::GameOutfitShaders)) {
+        item->setCustomAttribute(1, shader);
+        item->setCustomAttribute(2, frame);
+        item->setCustomAttribute(3, pokeId);
+        if (shader == 1) {
+            item->setShader("outfit_rainbow");
+        }
+        else if (shader == 2) {
+            item->setShader("outfit_stars");
+        }
+        else if (shader == 3) {
+            item->setShader("outfit_blue_energy");
+        }
+        else if (shader == 4) {
+            item->setShader("outfit_red_energy");
+        }
+        else if (shader == 5) {
+            item->setShader("outfit_purple_energy");
+        }
+        else if (shader == 6) {
+            item->setShader("outfit_green_energy");
+        }
+        else if (shader == 7) {
+            item->setShader("outfit_blood");
+        }
+        else if (shader == 8) {
+            item->setShader("outfit_sun");
+        }
+        else if (shader == 9) {
+            item->setShader("outfit_gold");
+        }
+        else if (shader == 10) {
+            item->setShader("outfit_circle");
+        }
+        else if (shader == 11) {
+            item->setShader("outfit_line");
+        }
+        else if (shader == 12) {
+            item->setShader("outfit_3line");
+        }
+        else if (shader == 13) {
+            item->setShader("outfit_shine");
+        }
+        else if (shader == 14) {
+            item->setShader("outfit_ice");
+        }
+        else if (shader == 15) {
+            item->setShader("outfit_brazil");
+        }
+        else if (shader == 16) {
+            item->setShader("outfit_camouflage");
+        }
+        else if (shader == 17) {
+            item->setShader("outfit_cosmos");
+        }
+        else if (shader == 18) {
+            item->setShader("outfit_glitch");
+        }
+        else if (shader == 19) {
+            item->setShader("outfit_purpleneon");
+        }
+        else if (shader == 20) {
+            item->setShader("outfit_purplesky");
+        }
+        else if (shader == 21) {
+            item->setShader("outfit_shimmering");
+        }
+        else if (shader == 22) {
+            item->setShader("outfit_static");
+        }
+        else if (shader == 23) {
+            item->setShader("outfit_sweden");
+        }
+        else if (shader == 24) {
+            item->setShader("outfit_outline_rainbow");
+        }
+        else if (shader == 25) {
+            item->setShader("outfit_outline_red");
+        }
+        else if (shader == 26) {
+            item->setShader("Smooth Blue Outline");
+        }
+        else if (shader == 27) {
+            item->setShader("Smooth Red Outline");
+        }
+        else if (shader == 28) {
+            item->setShader("Smooth Green Outline");
+        }
+        else if (shader == 29) {
+            item->setShader("Smooth Purple Outline");
         }
     }
 

@@ -391,7 +391,7 @@ void ProtocolGame::sendBuyItem(int itemId, int subType, int amount, bool ignoreC
     msg->addU8(Proto::ClientBuyItem);
     msg->addU16(itemId);
     msg->addU8(subType);
-    msg->addU8(amount);
+    msg->addU16(amount);
     msg->addU8(ignoreCapacity ? 0x01 : 0x00);
     msg->addU8(buyWithBackpack ? 0x01 : 0x00);
     send(msg);
@@ -1000,7 +1000,7 @@ void ProtocolGame::sendAnswerModalDialog(uint32 dialog, int button, int choice)
     msg->addU8(Proto::ClientAnswerModalDialog);
     msg->addU32(dialog);
     msg->addU8(button);
-    msg->addU8(choice);
+    msg->addU16(choice);
     send(msg);
 }
 

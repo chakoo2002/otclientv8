@@ -76,6 +76,13 @@ public:
     void setPassable(bool passable) { m_passable = passable; }
     void setSpeedFormula(double speedA, double speedB, double speedC);
 
+    void setLevel(uint32 level);
+    uint32 getLevel() { return m_level; }
+    void setBoost(uint32 boost);
+    uint32 getBoost() { return m_boost; }
+
+    void setInstantOutfitColor(const Color& color, int duration);
+
     void addTimedSquare(uint8 color);
     void removeTimedSquare() { m_showTimedSquare = false; }
 
@@ -83,7 +90,7 @@ public:
     void hideStaticSquare() { m_showStaticSquare = false; }
 
     void setInformationColor(const Color& color) { m_useCustomInformationColor = true; m_informationColor = color; }
-    void resetInformationColor() { m_useCustomInformationColor = false; setHealthPercent(getHealthPercent());  }
+    void resetInformationColor() { m_useCustomInformationColor = false; setHealthPercent(getHealthPercent()); }
 
     Point getInformationOffset() { return m_informationOffset; }
     void setInformationOffset(int x, int y) { m_informationOffset = Point(x, y); }
@@ -98,11 +105,13 @@ public:
 
     uint32 getId() { return m_id; }
     std::string getName() { return m_name; }
+    Point getWingsOffset() { return m_wingsOffset; } void setWingsOffset(int x, int y) { m_wingsOffset.x = x; m_wingsOffset.y = y; }
     uint8 getHealthPercent() { return m_healthPercent; }
     int8 getManaPercent() { return m_manaPercent; }
     Otc::Direction getDirection() { return m_direction; }
     Otc::Direction getWalkDirection() { return m_walkDirection; }
     Outfit getOutfit() { return m_outfit; }
+    int getWings() { return m_outfit.getWings(); }
     Light getLight() { return m_light; }
     uint16 getSpeed() { return m_speed; }
     double getBaseSpeed() { return m_baseSpeed; }
@@ -153,7 +162,7 @@ public:
     bool canShoot(int distance);
 
     const ThingTypePtr& getThingType();
-    ThingType *rawGetThingType();
+    ThingType* rawGetThingType();
 
     virtual void onPositionChange(const Position& newPos, const Position& oldPos);
     virtual void onAppear();
@@ -210,6 +219,8 @@ protected:
     void updateJump();
 
     uint32 m_id;
+    uint32 m_level;
+    uint32 m_boost;
     std::string m_name;
     uint8 m_healthPercent;
     int8 m_manaPercent;
@@ -241,11 +252,15 @@ protected:
     CachedText m_nameCache;
     Color m_informationColor;
     bool m_useCustomInformationColor = false;
+    bool m_useCustomNameColor = false;
+    Point m_wingsOffset;
     Point m_informationOffset;
     Color m_outfitColor;
     ScheduledEventPtr m_outfitColorUpdateEvent;
     Timer m_outfitColorTimer;
     CachedText m_titleCache;
+    CachedText m_levelCache;
+    CachedText m_boostCache;
     Color m_titleColor;
 
     static std::array<double, Otc::LastSpeedFormula> m_speedFormula;

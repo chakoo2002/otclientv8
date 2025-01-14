@@ -29,6 +29,8 @@
 
 class Outfit
 {
+protected:
+    Point wingsOffset;
 public:
     Outfit();
 
@@ -58,6 +60,8 @@ public:
 
     void resetClothes();
     void resetShader() { m_shader = ""; }
+
+    void setWingsOffset(Point offset) { wingsOffset = offset; }
 
     int getId() const { return m_id; }
     int getAuxId() const { return m_auxId; }

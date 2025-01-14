@@ -45,7 +45,7 @@ void StaticText::drawText(const Point& dest, const Rect& parentRect)
 
     // draw only if the real center is not too far from the parent center, or its a yell
     //if(g_map.isAwareOfPosition(m_position) || isYell()) {
-        m_cachedText.draw(boundRect, m_color);
+    m_cachedText.draw(boundRect, m_color);
     //}
 }
 
@@ -105,11 +105,12 @@ bool StaticText::addColoredMessage(const std::string& name, Otc::MessageMode mod
 void StaticText::update()
 {
     m_messages.pop_front();
-    if(m_messages.empty()) {
+    if (m_messages.empty()) {
         // schedule removal
         auto self = asStaticText();
         g_dispatcher.addEvent([self]() { g_map.removeThing(self); });
-    } else {
+    }
+    else {
         compose();
         scheduleUpdate();
     }
@@ -123,7 +124,7 @@ void StaticText::scheduleUpdate()
     m_updateEvent = g_dispatcher.scheduleEvent([self]() {
         self->m_updateEvent = nullptr;
         self->update();
-    }, delay);
+        }, delay);
 }
 
 void StaticText::compose()
@@ -131,30 +132,39 @@ void StaticText::compose()
     //TODO: this could be moved to lua
     std::vector<std::string> texts;
 
-    if(m_mode == Otc::MessageSay) {
+    if (m_mode == Otc::MessageSay) {
         texts.push_back(m_name + " says:\n");
-        texts.push_back("#EFEF00");
-        m_color = Color(239, 239, 0);
-    } else if(m_mode == Otc::MessageWhisper) {
-        texts.push_back(m_name + " whispers:\n");
-        texts.push_back("#EFEF00");
-        m_color = Color(239, 239, 0);
-    } else if(m_mode == Otc::MessageYell) {
+        texts.push_back("#e3b049");
+        m_color = Color(227, 176, 73);
+       // if
+       // m_cachedText.setFont(g_fonts.getFont("verdana-11px-rounded"));
+    }
+    else if (m_mode == Otc::MessageWhisper) {
+        texts.push_back(m_name + " says:\n");
+        texts.push_back("#e3b049");
+        m_cachedText.setFont(g_fonts.getFont("lucida-11px-rounded"));
+        m_color = Color(227, 176, 73);
+    }
+    else if (m_mode == Otc::MessageYell) {
         texts.push_back(m_name + " yells:\n");
-        texts.push_back("#EFEF00");
-        m_color = Color(239, 239, 0);
-    } else if(m_mode == Otc::MessageMonsterSay || m_mode == Otc::MessageMonsterYell || m_mode == Otc::MessageSpell
-              || m_mode == Otc::MessageBarkLow || m_mode == Otc::MessageBarkLoud) {
+        texts.push_back("#e3b049");
+        m_color = Color(227, 176, 73);
+    }
+    else if (m_mode == Otc::MessageMonsterSay || m_mode == Otc::MessageMonsterYell || m_mode == Otc::MessageSpell
+        || m_mode == Otc::MessageBarkLow || m_mode == Otc::MessageBarkLoud) {
         m_color = Color(254, 101, 0);
-    } else if(m_mode == Otc::MessageNpcFrom || m_mode == Otc::MessageNpcFromStartBlock) {
+        m_cachedText.setFont(g_fonts.getFont("Reggae One-10px-bordered"));
+    }
+    else if (m_mode == Otc::MessageNpcFrom || m_mode == Otc::MessageNpcFromStartBlock) {
         texts.push_back(m_name + " says:\n");
         texts.push_back("#5FF7F7");
         m_color = Color(95, 247, 247);
-    } else {
+    }
+    else {
         g_logger.warning(stdext::format("Unknown speak type: %d", m_mode));
     }
 
-    for(uint i = 0; i < m_messages.size(); ++i) {
+    for (uint i = 0; i < m_messages.size(); ++i) {
         for (size_t j = 0; j < m_messages[i].texts.size() - 1; j += 2) {
             texts.push_back(m_messages[i].texts[j]);
             texts.push_back(m_messages[i].texts[j + 1].empty() ? m_color.toHex() : m_messages[i].texts[j + 1]);

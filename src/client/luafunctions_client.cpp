@@ -558,6 +558,10 @@ void Client::registerLuaFunctions()
     g_lua.bindClassMemberFunction<Creature>("getTimedSquareColor", &Creature::getTimedSquareColor);
     g_lua.bindClassMemberFunction<Creature>("isStaticSquareVisible", &Creature::isStaticSquareVisible);
     g_lua.bindClassMemberFunction<Creature>("getStaticSquareColor", &Creature::getStaticSquareColor);
+    g_lua.bindClassMemberFunction<Creature>("setWingsOffset", &Creature::setWingsOffset);
+    g_lua.bindClassMemberFunction<Creature>("getWingsOffset", &Creature::getWingsOffset);
+    g_lua.bindClassMemberFunction<Creature>("getWings", &Creature::getWings);
+    g_lua.bindClassMemberFunction<Creature>("getLevel", &Creature::getLevel);
 
     // widgets
     g_lua.bindClassMemberFunction<Creature>("addTopWidget", &Creature::addTopWidget);
@@ -694,6 +698,7 @@ void Client::registerLuaFunctions()
     g_lua.bindClassMemberFunction<Item>("getShader", &Item::getShader);
     g_lua.bindClassMemberFunction<Item>("setCustomAttribute", &Item::setCustomAttribute);
     g_lua.bindClassMemberFunction<Item>("getCustomAttribute", &Item::getCustomAttribute);
+    g_lua.bindClassMemberFunction<Item>("getRealUID", &Item::getRealUID);
 
     g_lua.registerClass<Effect, Thing>();
     g_lua.bindClassStaticFunction<Effect>("create", []{ return std::make_shared<Effect>(); });
@@ -780,6 +785,8 @@ void Client::registerLuaFunctions()
     g_lua.bindClassMemberFunction<LocalPlayer>("dumpWalkMatrix", &LocalPlayer::dumpWalkMatrix);
     g_lua.bindClassMemberFunction<LocalPlayer>("startServerWalking", &LocalPlayer::startServerWalking);
     g_lua.bindClassMemberFunction<LocalPlayer>("finishServerWalking", &LocalPlayer::finishServerWalking);
+    g_lua.bindClassMemberFunction<LocalPlayer>("getSummonId", &LocalPlayer::getSummonId);
+    g_lua.bindClassMemberFunction<LocalPlayer>("setSummonId", &LocalPlayer::setSummon);
 
     g_lua.registerClass<Tile>();
     g_lua.bindClassMemberFunction<Tile>("clean", &Tile::clean);
