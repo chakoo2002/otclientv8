@@ -347,7 +347,7 @@ void Game::processCloseContainer(int containerId)
     m_containers[containerId] = nullptr;
     container->onClose();
 }
-
+//edited
 void Game::processContainerAddItem(int containerId, const ItemPtr& item, int slot)
 {
     ContainerPtr container = getContainer(containerId);
@@ -356,6 +356,7 @@ void Game::processContainerAddItem(int containerId, const ItemPtr& item, int slo
     }
 
     container->onAddItem(item, slot);
+    refreshContainer(container);
 }
 
 void Game::processContainerUpdateItem(int containerId, int slot, const ItemPtr& item)
@@ -366,6 +367,7 @@ void Game::processContainerUpdateItem(int containerId, int slot, const ItemPtr& 
     }
 
     container->onUpdateItem(slot, item);
+    refreshContainer(container);
 }
 
 void Game::processContainerRemoveItem(int containerId, int slot, const ItemPtr& lastItem)
@@ -376,6 +378,7 @@ void Game::processContainerRemoveItem(int containerId, int slot, const ItemPtr& 
     }
 
     container->onRemoveItem(slot, lastItem);
+    refreshContainer(container);
 }
 
 void Game::processInventoryChange(int slot, const ItemPtr& item)
